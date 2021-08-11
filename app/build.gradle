@@ -10,12 +10,16 @@ android {
 
     defaultConfig {
         applicationId "com.powilliam.android.chatting"
-        minSdk 26
+        minSdk 21
         targetSdk 31
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        compose true
     }
 
     buildTypes {
@@ -24,12 +28,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion Dependencies.AndroidX.Compose.composeVersion
     }
 }
 
@@ -38,4 +48,17 @@ dependencies {
     implementation Dependencies.AndroidX.core
     implementation Dependencies.AndroidX.appCompat
     implementation Dependencies.Google.materialDesign
+
+    implementation Dependencies.AndroidX.Activity.activityCompose
+
+    implementation Dependencies.AndroidX.Compose.ui
+    implementation Dependencies.AndroidX.Compose.foundation
+    implementation Dependencies.AndroidX.Compose.animation
+    implementation Dependencies.AndroidX.Compose.tooling
+    implementation Dependencies.AndroidX.Compose.runtimeLivedata
+    implementation Dependencies.AndroidX.Compose.materialDesign
+    implementation Dependencies.AndroidX.Compose.materialDesignIcons
+    implementation Dependencies.AndroidX.Compose.materialDesignIconsExtended
+
+    implementation Dependencies.AndroidX.Lifecycle.viewModelCompose
 }
