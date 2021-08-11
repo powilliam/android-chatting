@@ -26,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.powilliam.android.chatting.Screen
 import com.powilliam.android.chatting.ui.ChattingTheme
+import com.powilliam.android.chatting.ui.composables.ChatAppBar
 import com.powilliam.android.chatting.ui.composables.ChatOverlay
 import com.powilliam.android.chatting.ui.composables.MessageCard
 import com.powilliam.android.chatting.ui.composables.MessageCardList
@@ -34,18 +35,7 @@ import com.powilliam.android.chatting.ui.composables.MessageCardList
 fun ChatScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                elevation = 0.dp,
-                backgroundColor = MaterialTheme.colors.background,
-                title = {},
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Rounded.Person,
-                            contentDescription = "Go to Profile Screen"
-                        )
-                    }
-                })
+            ChatAppBar()
         }
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
