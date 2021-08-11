@@ -56,4 +56,12 @@ object Dependencies {
             const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-alpha06"
         }
     }
+
+    object Koin {
+        const val koinVersion = "3.1.2"
+
+        const val koinCore = "io.insert-koin:koin-core:$koinVersion"
+        const val koinAndroid = "io.insert-koin:koin-android:$koinVersion"
+        const val koinAndroidCompose = "io.insert-koin:koin-androidx-compose:$koinVersion"
+    }
 }

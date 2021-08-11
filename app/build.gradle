@@ -69,4 +69,8 @@ dependencies {
     implementation Dependencies.AndroidX.Lifecycle.lifecycleCompiler
 
     implementation Dependencies.AndroidX.Navigation.navigationCompose
+
+    implementation Dependencies.Koin.koinCore
+    implementation Dependencies.Koin.koinAndroid
+    implementation Dependencies.Koin.koinAndroidCompose
 }
