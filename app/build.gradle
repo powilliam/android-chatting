@@ -61,4 +61,6 @@ dependencies {
     implementation Dependencies.AndroidX.Compose.materialDesignIconsExtended
 
     implementation Dependencies.AndroidX.Lifecycle.viewModelCompose
+
+    implementation Dependencies.AndroidX.Navigation.navigationCompose
 }

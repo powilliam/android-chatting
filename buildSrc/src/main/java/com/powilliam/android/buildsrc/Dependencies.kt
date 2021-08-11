@@ -34,5 +34,9 @@ object Dependencies {
         object Lifecycle {
             const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
         }
+
+        object Navigation {
+            const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-alpha06"
+        }
     }
 }

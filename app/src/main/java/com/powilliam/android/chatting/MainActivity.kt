@@ -13,12 +13,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ChattingTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    Text(
-                        text = getString(R.string.app_name),
-                        style = MaterialTheme.typography.body1
-                    )
-                }
+                Navigation()
             }
         }
     }
