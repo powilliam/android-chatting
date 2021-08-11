@@ -47,7 +47,7 @@ private fun VisibleAppBar(onPressActionButton: () -> Unit) = TopAppBar(
 @Preview
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun ChatAppBarHiddenState_Preview() {
+private fun ChatAppBarHiddenState_Preview() {
     ChattingTheme {
         ChatAppBar()
     }
@@ -56,7 +56,7 @@ fun ChatAppBarHiddenState_Preview() {
 @Preview
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun ChatAppBarVisibleState_Preview() {
+private fun ChatAppBarVisibleState_Preview() {
     ChattingTheme {
         ChatAppBar(appBarState = ChatAppBarState.Visible())
     }

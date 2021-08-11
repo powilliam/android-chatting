@@ -40,7 +40,7 @@ private fun MessageCardStickyHeader() = Text(
 @Preview
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun MessageCardList_Preview() {
+private fun MessageCardList_Preview() {
     ChattingTheme {
         MessageCardList(
             messages = listOf(
