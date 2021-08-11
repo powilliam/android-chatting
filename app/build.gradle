@@ -47,6 +47,7 @@ dependencies {
 
     implementation Dependencies.AndroidX.core
     implementation Dependencies.AndroidX.appCompat
+    implementation Dependencies.AndroidX.constraintLayoutCompose
     implementation Dependencies.Google.materialDesign
 
     implementation Dependencies.AndroidX.Activity.activityCompose
