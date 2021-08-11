@@ -13,17 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.powilliam.android.chatting.domain.models.Message
 import com.powilliam.android.chatting.ui.ChattingTheme
 import java.util.*
-
-// TODO: It should be placed at domain package
-data class Message(
-    val uid: UUID = UUID.randomUUID(),
-    val avatarUrl: String = "",
-    val displayName: String,
-    val date: String = "21/09/21",
-    val content: String = ""
-)
 
 @Composable
 fun MessageCard(message: Message) = Surface(
