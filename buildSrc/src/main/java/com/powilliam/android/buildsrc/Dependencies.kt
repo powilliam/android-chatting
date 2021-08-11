@@ -12,7 +12,8 @@ object Dependencies {
     object AndroidX {
         const val core = "androidx.core:core-ktx:1.6.0"
         const val appCompat = "androidx.appcompat:appcompat:1.3.1"
-        const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+        const val constraintLayoutCompose =
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 
         object Activity {
             const val activityCompose = "androidx.activity:activity-compose:1.3.1"
@@ -26,14 +27,29 @@ object Dependencies {
             const val tooling = "androidx.compose.ui:ui-tooling:$composeVersion"
 
             const val materialDesign = "androidx.compose.material:material:$composeVersion"
-            const val materialDesignIcons = "androidx.compose.material:material-icons-core:$composeVersion"
-            const val materialDesignIconsExtended = "androidx.compose.material:material-icons-extended:$composeVersion"
+            const val materialDesignIcons =
+                "androidx.compose.material:material-icons-core:$composeVersion"
+            const val materialDesignIconsExtended =
+                "androidx.compose.material:material-icons-extended:$composeVersion"
 
             const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$composeVersion"
         }
 
         object Lifecycle {
-            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+            const val lifecycleVersion = "2.4.0-alpha03"
+
+            const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+            const val viewModelRuntime =
+                "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+            const val viewModelCompose =
+                "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+            const val viewModelSavedState =
+                "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
+
+            const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+
+            const val lifecycleCompiler =
+                "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
         }
 
         object Navigation {
