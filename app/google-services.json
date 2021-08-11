@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "998959088970",
+    "firebase_url": "https://android-chatting-db5e7-default-rtdb.firebaseio.com",
+    "project_id": "android-chatting-db5e7",
+    "storage_bucket": "android-chatting-db5e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998959088970:android:323c4b9f85afd2766d2db3",
+        "android_client_info": {
+          "package_name": "com.powilliam.android.chatting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998959088970-gf6ptvd9mai93sna58drdqrb7skj6hfs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_E8K7EI-sYyZccG0qPG395bRYaAGBTf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998959088970-gf6ptvd9mai93sna58drdqrb7skj6hfs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

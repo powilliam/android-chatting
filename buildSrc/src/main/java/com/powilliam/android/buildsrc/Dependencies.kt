@@ -4,9 +4,16 @@ object Dependencies {
     const val kotlinVersion = "1.5.21"
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    const val googleServicesGradlePlugin = "com.google.gms:google-services:4.3.8"
 
     object Google {
         const val materialDesign = "com.google.android.material:material:1.4.0"
+
+        object Firebase {
+            const val bom = "com.google.firebase:firebase-bom:28.3.0"
+            const val auth = "com.google.firebase:firebase-auth-ktx"
+            const val realtimeDatabase = "com.google.firebase:firebase-database-ktx"
+        }
     }
 
     object AndroidX {

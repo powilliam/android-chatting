@@ -3,6 +3,7 @@ import com.powilliam.android.buildsrc.Dependencies
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -44,6 +45,11 @@ android {
 }
 
 dependencies {
+
+    implementation platform(Dependencies.Google.Firebase.bom)
+
+    implementation Dependencies.Google.Firebase.auth
+    implementation Dependencies.Google.Firebase.realtimeDatabase
 
     implementation Dependencies.AndroidX.core
     implementation Dependencies.AndroidX.appCompat
