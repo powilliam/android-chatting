@@ -14,9 +14,19 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.powilliam.android.chatting.ui.ChattingTheme
+import java.util.*
+
+// TODO: It should be placed at domain package
+data class Message(
+    val uid: UUID = UUID.randomUUID(),
+    val avatarUrl: String = "",
+    val displayName: String,
+    val date: String = "21/09/21",
+    val content: String = ""
+)
 
 @Composable
-fun MessageCard() = Surface(
+fun MessageCard(message: Message) = Surface(
     color = MaterialTheme.colors.background,
     shape = MaterialTheme.shapes.medium
 ) {
@@ -37,7 +47,7 @@ fun MessageCard() = Surface(
         )
 
         Text(
-            text = "Fulaninho",
+            text = message.displayName,
             style = MaterialTheme.typography.body1,
             modifier = Modifier.constrainAs(ref = displayName) {
                 top.linkTo(anchor = avatar.top)
@@ -49,7 +59,7 @@ fun MessageCard() = Surface(
 
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = "12 min ago",
+                text = message.date,
                 style = MaterialTheme.typography.caption,
                 modifier = Modifier.constrainAs(ref = createdAt) {
                     top.linkTo(anchor = displayName.bottom)
@@ -61,7 +71,7 @@ fun MessageCard() = Surface(
         }
 
         Text(
-            text = "Lorem ipsum dolor asimetfodase",
+            text = message.content,
             style = MaterialTheme.typography.body1,
             modifier = Modifier.constrainAs(ref = content) {
                 top.linkTo(anchor = avatar.bottom, margin = 12.dp)
@@ -79,6 +89,6 @@ fun MessageCard() = Surface(
 @Composable
 private fun MessageCard_Preview() {
     ChattingTheme {
-        MessageCard()
+        MessageCard(message = Message(displayName = "William Porto", content = "Lorem Ipsum"))
     }
 }

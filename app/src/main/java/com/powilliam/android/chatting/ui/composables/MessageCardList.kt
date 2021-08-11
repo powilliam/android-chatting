@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,15 +16,16 @@ import com.powilliam.android.chatting.ui.ChattingTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MessageCardList(modifier: Modifier = Modifier) = LazyColumn(modifier) {
-    stickyHeader {
-        MessageCardStickyHeader()
-    }
+fun MessageCardList(modifier: Modifier = Modifier, messages: List<Message> = listOf()) =
+    LazyColumn(modifier) {
+//        stickyHeader {
+//            MessageCardStickyHeader()
+//        }
 
-    item {
-        MessageCard()
+        items(items = messages, key = { it.uid }) {
+            MessageCard(message = it)
+        }
     }
-}
 
 @Composable
 private fun MessageCardStickyHeader() = Text(
@@ -40,6 +42,17 @@ private fun MessageCardStickyHeader() = Text(
 @Composable
 fun MessageCardList_Preview() {
     ChattingTheme {
-        MessageCardList()
+        MessageCardList(
+            messages = listOf(
+                Message(
+                    displayName = "William Porto",
+                    content = "AAAAAAAAA"
+                ),
+                Message(
+                    displayName = "William Porto",
+                    content = "BBBBBBBBBB"
+                ),
+            )
+        )
     }
 }
