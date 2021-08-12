@@ -24,7 +24,8 @@ import com.powilliam.android.chatting.ui.composables.Description
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    scrollState: ScrollState = rememberScrollState()
+    scrollState: ScrollState = rememberScrollState(),
+    signOutFromGoogle: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -59,7 +60,11 @@ fun ProfileScreen(
                     )
                 },
                 label = "Logout",
-                description = "You will be able to login again"
+                description = "You will be able to login again",
+                onClick = {
+                    signOutFromGoogle()
+                    navController.popBackStack()
+                }
             )
         }
     }

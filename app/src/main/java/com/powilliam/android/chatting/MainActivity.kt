@@ -30,7 +30,8 @@ class MainActivity : ComponentActivity() {
             ChattingTheme {
                 Navigation(
                     authenticationViewModel = authenticationViewModel,
-                    signInWithGoogle = { signInWithGoogle() })
+                    signInWithGoogle = { signInWithGoogle() },
+                    signOutFromGoogle = { signOutFromGoogle() })
             }
         }
     }
@@ -56,6 +57,11 @@ class MainActivity : ComponentActivity() {
             .build()
         val googleSignInClient = GoogleSignIn.getClient(this@MainActivity, gso)
         startActivityForResult(googleSignInClient.signInIntent, GOOGLE_SIGNIN_REQUEST_CODE)
+    }
+
+    private fun signOutFromGoogle() {
+        firebaseAuth.signOut()
+        authenticationViewModel.unAuthenticate()
     }
 
     private fun firebaseAuthWithGoogle(idToken: String) {

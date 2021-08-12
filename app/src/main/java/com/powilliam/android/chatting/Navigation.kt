@@ -18,7 +18,8 @@ sealed class Screen(val route: String) {
 fun Navigation(
     navController: NavHostController = rememberNavController(),
     authenticationViewModel: AuthenticationViewModel,
-    signInWithGoogle: () -> Unit = {}
+    signInWithGoogle: () -> Unit = {},
+    signOutFromGoogle: () -> Unit = {}
 ) {
     NavHost(navController = navController, startDestination = Screen.Chat.route) {
         composable(route = Screen.Chat.route) {
@@ -28,7 +29,9 @@ fun Navigation(
                 signInWithGoogle = { signInWithGoogle() })
         }
         composable(route = Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(
+                navController = navController,
+                signOutFromGoogle = { signOutFromGoogle() })
         }
     }
 }
