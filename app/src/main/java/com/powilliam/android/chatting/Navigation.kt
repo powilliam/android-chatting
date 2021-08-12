@@ -31,6 +31,7 @@ fun Navigation(
         composable(route = Screen.Profile.route) {
             ProfileScreen(
                 navController = navController,
+                authenticationViewModel = authenticationViewModel,
                 signOutFromGoogle = { signOutFromGoogle() })
         }
     }
