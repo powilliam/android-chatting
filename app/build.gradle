@@ -81,4 +81,6 @@ dependencies {
     implementation Dependencies.Koin.koinCore
     implementation Dependencies.Koin.koinAndroid
     implementation Dependencies.Koin.koinAndroidCompose
+
+    implementation Dependencies.Kotlin.kotlinDateTime
 }

@@ -6,6 +6,10 @@ object Dependencies {
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val googleServicesGradlePlugin = "com.google.gms:google-services:4.3.8"
 
+    object Kotlin {
+        const val kotlinDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
+    }
+
     object Google {
         const val materialDesign = "com.google.android.material:material:1.4.0"
         const val playServicesAuth = "com.google.android.gms:play-services-auth:19.2.0"
