@@ -9,6 +9,9 @@ import com.powilliam.android.chatting.domain.models.Message
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 data class MessagesState(val content: String = "", val messages: List<Message> = listOf())
 
@@ -22,6 +25,11 @@ class MessagesViewModel(private val database: DatabaseReference) : ViewModel() {
                 viewModelScope.launch {
                     snapshot.getValue<Map<String, Message>>()?.let { mapOfMessages ->
                         val messages = mapOfMessages.map { (_, message) -> message }
+                            .sortedBy {
+                                it.date.toLocalDateTime()
+                                    .toInstant(timeZone = TimeZone.UTC)
+                                    .toEpochMilliseconds()
+                            }
                         _messagesState.emit(_messagesState.value.copy(messages = messages))
                     }
                 }
