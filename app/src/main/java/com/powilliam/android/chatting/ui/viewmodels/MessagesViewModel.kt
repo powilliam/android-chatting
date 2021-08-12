@@ -16,7 +16,7 @@ import kotlinx.datetime.toLocalDateTime
 
 data class MessagesState(val content: String = "", val messages: List<Message> = listOf())
 
-class MessagesViewModel(private val database: DatabaseReference) : ViewModel() {
+class MessagesViewModel(private val databaseRef: DatabaseReference) : ViewModel() {
     private var _messagesState: MutableStateFlow<MessagesState> = MutableStateFlow(MessagesState())
     val messagesState: StateFlow<MessagesState> = _messagesState
 
@@ -40,7 +40,10 @@ class MessagesViewModel(private val database: DatabaseReference) : ViewModel() {
                 Log.e("MessagesViewModel", error.message)
             }
         }
-        database.child("messages").addValueEventListener(messagesValueEventListener)
+        val messagesRef = databaseRef.child("messages")
+
+        messagesRef.keepSynced(true)
+        messagesRef.addValueEventListener(messagesValueEventListener)
     }
 
     fun onContentChanged(newContent: String) = viewModelScope.launch {
@@ -54,7 +57,7 @@ class MessagesViewModel(private val database: DatabaseReference) : ViewModel() {
                 displayName = account.displayName ?: "John Doe",
                 avatarUrl = account.photoUrl.toString()
             )
-            database.child("messages").child(message.uid).setValue(message)
+            databaseRef.child("messages").child(message.uid).setValue(message)
             _messagesState.emit(_messagesState.value.copy(content = ""))
         }
     }

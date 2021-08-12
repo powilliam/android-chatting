@@ -11,5 +11,5 @@ val mainModule = module {
     single { Firebase.database.reference }
 
     viewModel { AuthenticationViewModel() }
-    viewModel { MessagesViewModel(database = get()) }
+    viewModel { MessagesViewModel(databaseRef = get()) }
 }

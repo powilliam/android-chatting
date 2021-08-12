@@ -11,6 +11,9 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.powilliam.android.chatting.ui.ChattingTheme
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
@@ -21,9 +24,12 @@ class MainActivity : ComponentActivity() {
     private val authenticationViewModel: AuthenticationViewModel by viewModel()
     private val messagesViewModel: MessagesViewModel by viewModel()
     private val firebaseAuth: FirebaseAuth = Firebase.auth
+    private val firebaseDatabase: FirebaseDatabase = Firebase.database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        firebaseDatabase.setPersistenceEnabled(true)
 
         firebaseAuth.currentUser?.let {
             authenticationViewModel.authenticate(it)
