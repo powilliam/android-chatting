@@ -19,7 +19,7 @@ object Dependencies {
         const val playServicesAuth = "com.google.android.gms:play-services-auth:19.2.0"
 
         object Firebase {
-            const val bom = "com.google.firebase:firebase-bom:28.3.0"
+            const val bom = "com.google.firebase:firebase-bom:28.3.1"
             const val auth = "com.google.firebase:firebase-auth-ktx"
             const val realtimeDatabase = "com.google.firebase:firebase-database-ktx"
         }

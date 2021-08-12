@@ -9,6 +9,15 @@ plugins {
 android {
     compileSdk 31
 
+    signingConfigs {
+        release {
+            storeFile file('release.keystore')
+            storePassword 'release'
+            keyAlias 'release'
+            keyPassword 'release'
+        }
+    }
+
     defaultConfig {
         applicationId "com.powilliam.android.chatting"
         minSdk 21
@@ -27,6 +36,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

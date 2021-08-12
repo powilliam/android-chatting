@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "998959088970-bmtq8taadp1v4ratn5snnv3rjssr1oi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.powilliam.android.chatting",
+            "certificate_hash": "a72b2c072e2cc6f4f629e18388a1d84e793bfe7a"
+          }
+        },
+        {
           "client_id": "998959088970-oaf4il27l1vj0g1g6h31pvt1cacccg2n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
