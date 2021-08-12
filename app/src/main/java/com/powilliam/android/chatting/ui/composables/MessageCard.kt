@@ -15,6 +15,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.powilliam.android.chatting.domain.models.Message
 import com.powilliam.android.chatting.ui.ChattingTheme
+import com.powilliam.android.chatting.utils.parse
 import java.util.*
 
 @Composable
@@ -51,7 +52,7 @@ fun MessageCard(message: Message) = Surface(
 
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = message.date,
+                text = parse(message.date),
                 style = MaterialTheme.typography.caption,
                 modifier = Modifier.constrainAs(ref = createdAt) {
                     top.linkTo(anchor = displayName.bottom)
