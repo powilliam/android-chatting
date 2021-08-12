@@ -8,6 +8,7 @@ object Dependencies {
 
     object Google {
         const val materialDesign = "com.google.android.material:material:1.4.0"
+        const val playServicesAuth = "com.google.android.gms:play-services-auth:19.2.0"
 
         object Firebase {
             const val bom = "com.google.firebase:firebase-bom:28.3.0"
