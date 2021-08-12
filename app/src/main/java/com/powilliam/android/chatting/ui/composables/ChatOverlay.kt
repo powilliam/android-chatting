@@ -20,14 +20,14 @@ import androidx.constraintlayout.compose.Dimension
 import com.powilliam.android.chatting.ui.ChattingTheme
 
 sealed class ChatOverlayState {
-    object DisplayGoogleSignIn : ChatOverlayState()
+    data class DisplayGoogleSignIn(val onPressGoogleSignIn: () -> Unit = {}) : ChatOverlayState()
     object DisplayMessageForm : ChatOverlayState()
 }
 
 @Composable
 fun ChatOverlay(
     modifier: Modifier = Modifier,
-    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn
+    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn()
 ) = Surface(
     color = MaterialTheme.colors.background,
     modifier = modifier
@@ -35,7 +35,9 @@ fun ChatOverlay(
 ) {
     Crossfade(targetState = chatOverlayState) { state ->
         when (state) {
-            is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn()
+            is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn {
+                state.onPressGoogleSignIn()
+            }
             is ChatOverlayState.DisplayMessageForm -> WithMessageForm()
         }
     }
