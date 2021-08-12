@@ -11,15 +11,19 @@ import com.powilliam.android.chatting.Screen
 import com.powilliam.android.chatting.ui.composables.*
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
+import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ChatScreen(
     navController: NavHostController,
     authenticationViewModel: AuthenticationViewModel = getViewModel(),
+    messagesViewModel: MessagesViewModel = getViewModel(),
     signInWithGoogle: () -> Unit = {}
 ) {
     val authenticationState = authenticationViewModel.authenticationState.collectAsState()
+    val messagesState = messagesViewModel.messagesState.collectAsState()
+
     val appBarState by remember {
         derivedStateOf {
             if (authenticationState.value is AuthenticationState.Unauthenticated) {
@@ -47,13 +51,15 @@ fun ChatScreen(
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (lazyColumn, divider, actions) = createRefs()
 
-            MessageCardList(modifier = Modifier.constrainAs(ref = lazyColumn) {
-                start.linkTo(anchor = parent.start)
-                end.linkTo(anchor = parent.end)
-                top.linkTo(anchor = parent.top)
-                bottom.linkTo(anchor = divider.top)
-                height = Dimension.fillToConstraints
-            })
+            MessageCardList(
+                messages = messagesState.value.messages,
+                modifier = Modifier.constrainAs(ref = lazyColumn) {
+                    start.linkTo(anchor = parent.start)
+                    end.linkTo(anchor = parent.end)
+                    top.linkTo(anchor = parent.top)
+                    bottom.linkTo(anchor = divider.top)
+                    height = Dimension.fillToConstraints
+                })
 
             Divider(modifier = Modifier.constrainAs(ref = divider) {
                 start.linkTo(anchor = parent.start)
@@ -64,6 +70,16 @@ fun ChatScreen(
 
             ChatOverlay(
                 chatOverlayState = chatOverlayState,
+                content = messagesState.value.content,
+                onContentChanged = { newContent -> messagesViewModel.onContentChanged(newContent) },
+                onCreateMessage = {
+                    if (authenticationState.value is AuthenticationState.Authenticated) {
+                        messagesViewModel.onCreateMessage(
+                            displayName = (authenticationState.value as AuthenticationState.Authenticated).account.displayName
+                                ?: "John Doe"
+                        )
+                    }
+                },
                 modifier = Modifier.constrainAs(ref = actions) {
                     start.linkTo(anchor = parent.start)
                     end.linkTo(anchor = parent.end)

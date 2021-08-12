@@ -27,7 +27,10 @@ sealed class ChatOverlayState {
 @Composable
 fun ChatOverlay(
     modifier: Modifier = Modifier,
-    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn()
+    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn(),
+    content: String = "",
+    onContentChanged: (String) -> Unit = {},
+    onCreateMessage: () -> Unit = {}
 ) = Surface(
     color = MaterialTheme.colors.background,
     modifier = modifier
@@ -38,7 +41,11 @@ fun ChatOverlay(
             is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn {
                 state.onPressGoogleSignIn()
             }
-            is ChatOverlayState.DisplayMessageForm -> WithMessageForm()
+            is ChatOverlayState.DisplayMessageForm -> WithMessageForm(
+                content = content,
+                onContentChanged = onContentChanged,
+                onCreateMessage = onCreateMessage
+            )
         }
     }
 }
@@ -60,7 +67,11 @@ private fun WithGoogleSignIn(onPressGoogleSignIn: () -> Unit = {}) =
     }
 
 @Composable
-private fun WithMessageForm() {
+private fun WithMessageForm(
+    content: String = "",
+    onContentChanged: (String) -> Unit,
+    onCreateMessage: () -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,8 +80,8 @@ private fun WithMessageForm() {
         val (textField, submit) = createRefs()
 
         TextField(
-            value = "",
-            onValueChange = {},
+            value = content,
+            onValueChange = onContentChanged,
             placeholder = {
                 Text(text = "Message")
             },
@@ -90,7 +101,7 @@ private fun WithMessageForm() {
         )
 
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = onCreateMessage,
             modifier = Modifier.constrainAs(ref = submit) {
                 end.linkTo(anchor = parent.end)
                 top.linkTo(anchor = parent.top)

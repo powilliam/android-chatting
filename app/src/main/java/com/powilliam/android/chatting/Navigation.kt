@@ -8,6 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import com.powilliam.android.chatting.ui.screens.ChatScreen
 import com.powilliam.android.chatting.ui.screens.ProfileScreen
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
+import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import org.koin.androidx.compose.getViewModel
 
 sealed class Screen(val route: String) {
     object Chat : Screen(route = "chat")
@@ -17,7 +19,8 @@ sealed class Screen(val route: String) {
 @Composable
 fun Navigation(
     navController: NavHostController = rememberNavController(),
-    authenticationViewModel: AuthenticationViewModel,
+    authenticationViewModel: AuthenticationViewModel = getViewModel(),
+    messagesViewModel: MessagesViewModel = getViewModel(),
     signInWithGoogle: () -> Unit = {},
     signOutFromGoogle: () -> Unit = {}
 ) {
