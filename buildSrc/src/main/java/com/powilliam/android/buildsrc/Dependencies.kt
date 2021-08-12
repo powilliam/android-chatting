@@ -6,6 +6,10 @@ object Dependencies {
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val googleServicesGradlePlugin = "com.google.gms:google-services:4.3.8"
 
+    object Coil {
+        const val coilCompose = "io.coil-kt:coil-compose:1.3.2"
+    }
+
     object Kotlin {
         const val kotlinDateTime = "org.jetbrains.kotlinx:kotlinx-datetime:0.2.1"
     }

@@ -3,6 +3,7 @@ package com.powilliam.android.chatting.ui.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 import com.powilliam.android.chatting.domain.models.Message
@@ -46,9 +47,13 @@ class MessagesViewModel(private val database: DatabaseReference) : ViewModel() {
         _messagesState.emit(_messagesState.value.copy(content = newContent))
     }
 
-    fun onCreateMessage(displayName: String) = viewModelScope.launch {
+    fun onCreateMessage(account: FirebaseUser) = viewModelScope.launch {
         if (_messagesState.value.content.isNotEmpty()) {
-            val message = Message(content = _messagesState.value.content, displayName = displayName)
+            val message = Message(
+                content = _messagesState.value.content,
+                displayName = account.displayName ?: "John Doe",
+                avatarUrl = account.photoUrl.toString()
+            )
             database.child("messages").child(message.uid).setValue(message)
             _messagesState.emit(_messagesState.value.copy(content = ""))
         }

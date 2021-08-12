@@ -1,8 +1,7 @@
 package com.powilliam.android.chatting.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
@@ -13,10 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.powilliam.android.chatting.domain.models.Message
 import com.powilliam.android.chatting.ui.ChattingTheme
 import com.powilliam.android.chatting.utils.parse
-import java.util.*
+import com.powilliam.android.chatting.R
 
 @Composable
 fun MessageCard(message: Message) = Surface(
@@ -29,14 +30,22 @@ fun MessageCard(message: Message) = Surface(
     ) {
         val (avatar, displayName, createdAt, content) = createRefs()
 
-        Box(
+        Image(
+            painter = rememberImagePainter(
+                data = message.avatarUrl,
+                builder = {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                    placeholder(drawableResId = R.drawable.ic_round_account_circle_24)
+                },
+            ),
+            contentDescription = "${message.displayName} avatar",
             modifier = Modifier
                 .constrainAs(ref = avatar) {
                     start.linkTo(anchor = parent.start, margin = 8.dp)
                     top.linkTo(anchor = parent.top, margin = 12.dp)
                 }
                 .size(38.dp)
-                .background(color = MaterialTheme.colors.surface)
         )
 
         Text(

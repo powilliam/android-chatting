@@ -74,10 +74,7 @@ fun ChatScreen(
                 onContentChanged = { newContent -> messagesViewModel.onContentChanged(newContent) },
                 onCreateMessage = {
                     if (authenticationState.value is AuthenticationState.Authenticated) {
-                        messagesViewModel.onCreateMessage(
-                            displayName = (authenticationState.value as AuthenticationState.Authenticated).account.displayName
-                                ?: "John Doe"
-                        )
+                        messagesViewModel.onCreateMessage((authenticationState.value as AuthenticationState.Authenticated).account)
                     }
                 },
                 modifier = Modifier.constrainAs(ref = actions) {
