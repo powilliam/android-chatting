@@ -1,6 +1,6 @@
 package com.powilliam.android.chatting.ui.screens
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -11,21 +11,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.powilliam.android.chatting.ui.ChattingTheme
+import com.google.firebase.auth.FirebaseUser
 import com.powilliam.android.chatting.ui.composables.ActionCard
 import com.powilliam.android.chatting.ui.composables.Description
+import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
+import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    scrollState: ScrollState = rememberScrollState()
+    authenticationViewModel: AuthenticationViewModel = getViewModel(),
+    scrollState: ScrollState = rememberScrollState(),
+    signOutFromGoogle: () -> Unit = {}
 ) {
+    val authenticationState = authenticationViewModel.authenticationState.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -48,28 +54,37 @@ fun ProfileScreen(
                 orientation = Orientation.Vertical
             )
         ) {
-            Description(label = "DISPLAY NAME", text = "Lorem Ipsum")
-            Description(label = "E-MAIL", text = "lorem.ipsum@company.rs")
-            Divider()
-            ActionCard(
-                trailing = {
-                    Icon(
-                        imageVector = Icons.Rounded.Logout,
-                        contentDescription = null
-                    )
-                },
-                label = "Logout",
-                description = "You will be able to login again"
-            )
+            Crossfade(targetState = authenticationState.value) {
+                when (it) {
+                    is AuthenticationState.Authenticated -> WithAuthenticatedState(
+                        account = it.account,
+                        onClickSignOut = {
+                            signOutFromGoogle()
+                            navController.popBackStack()
+                        })
+                    else -> {
+                    }
+                }
+            }
         }
     }
 }
 
-@Preview
-@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
-private fun ProfileScreen_Preview() {
-    ChattingTheme {
-        ProfileScreen(navController = rememberNavController())
+private fun WithAuthenticatedState(account: FirebaseUser, onClickSignOut: () -> Unit = {}) =
+    Column {
+        Description(label = "DISPLAY NAME", text = account.displayName ?: "John Doe")
+        Description(label = "E-MAIL", text = account.email ?: "john.doe@company.rs")
+        Divider()
+        ActionCard(
+            trailing = {
+                Icon(
+                    imageVector = Icons.Rounded.Logout,
+                    contentDescription = null
+                )
+            },
+            label = "Logout",
+            description = "You will be able to login again",
+            onClick = onClickSignOut
+        )
     }
-}

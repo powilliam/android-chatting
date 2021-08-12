@@ -3,6 +3,7 @@ import com.powilliam.android.buildsrc.Dependencies
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -45,6 +46,13 @@ android {
 
 dependencies {
 
+    implementation platform(Dependencies.Google.Firebase.bom)
+
+    implementation Dependencies.Google.playServicesAuth
+
+    implementation Dependencies.Google.Firebase.auth
+    implementation Dependencies.Google.Firebase.realtimeDatabase
+
     implementation Dependencies.AndroidX.core
     implementation Dependencies.AndroidX.appCompat
     implementation Dependencies.AndroidX.constraintLayoutCompose
@@ -61,7 +69,20 @@ dependencies {
     implementation Dependencies.AndroidX.Compose.materialDesignIcons
     implementation Dependencies.AndroidX.Compose.materialDesignIconsExtended
 
+    implementation Dependencies.AndroidX.Lifecycle.viewModel
+    implementation Dependencies.AndroidX.Lifecycle.viewModelRuntime
     implementation Dependencies.AndroidX.Lifecycle.viewModelCompose
+    implementation Dependencies.AndroidX.Lifecycle.viewModelSavedState
+    implementation Dependencies.AndroidX.Lifecycle.liveData
+    implementation Dependencies.AndroidX.Lifecycle.lifecycleCompiler
 
     implementation Dependencies.AndroidX.Navigation.navigationCompose
+
+    implementation Dependencies.Koin.koinCore
+    implementation Dependencies.Koin.koinAndroid
+    implementation Dependencies.Koin.koinAndroidCompose
+
+    implementation Dependencies.Kotlin.kotlinDateTime
+
+    implementation Dependencies.Coil.coilCompose
 }

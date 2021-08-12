@@ -1,8 +1,7 @@
 package com.powilliam.android.chatting.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
@@ -13,17 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
+import com.powilliam.android.chatting.domain.models.Message
 import com.powilliam.android.chatting.ui.ChattingTheme
-import java.util.*
-
-// TODO: It should be placed at domain package
-data class Message(
-    val uid: UUID = UUID.randomUUID(),
-    val avatarUrl: String = "",
-    val displayName: String,
-    val date: String = "21/09/21",
-    val content: String = ""
-)
+import com.powilliam.android.chatting.utils.parse
+import com.powilliam.android.chatting.R
 
 @Composable
 fun MessageCard(message: Message) = Surface(
@@ -36,14 +30,22 @@ fun MessageCard(message: Message) = Surface(
     ) {
         val (avatar, displayName, createdAt, content) = createRefs()
 
-        Box(
+        Image(
+            painter = rememberImagePainter(
+                data = message.avatarUrl,
+                builder = {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                    placeholder(drawableResId = R.drawable.ic_round_account_circle_24)
+                },
+            ),
+            contentDescription = "${message.displayName} avatar",
             modifier = Modifier
                 .constrainAs(ref = avatar) {
                     start.linkTo(anchor = parent.start, margin = 8.dp)
                     top.linkTo(anchor = parent.top, margin = 12.dp)
                 }
                 .size(38.dp)
-                .background(color = MaterialTheme.colors.surface)
         )
 
         Text(
@@ -59,7 +61,7 @@ fun MessageCard(message: Message) = Surface(
 
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = message.date,
+                text = parse(message.date),
                 style = MaterialTheme.typography.caption,
                 modifier = Modifier.constrainAs(ref = createdAt) {
                     top.linkTo(anchor = displayName.bottom)

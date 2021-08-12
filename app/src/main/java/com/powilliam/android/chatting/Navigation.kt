@@ -7,6 +7,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.powilliam.android.chatting.ui.screens.ChatScreen
 import com.powilliam.android.chatting.ui.screens.ProfileScreen
+import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
+import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import org.koin.androidx.compose.getViewModel
 
 sealed class Screen(val route: String) {
     object Chat : Screen(route = "chat")
@@ -14,13 +17,25 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun Navigation(navController: NavHostController = rememberNavController()) {
+fun Navigation(
+    navController: NavHostController = rememberNavController(),
+    authenticationViewModel: AuthenticationViewModel = getViewModel(),
+    messagesViewModel: MessagesViewModel = getViewModel(),
+    signInWithGoogle: () -> Unit = {},
+    signOutFromGoogle: () -> Unit = {}
+) {
     NavHost(navController = navController, startDestination = Screen.Chat.route) {
         composable(route = Screen.Chat.route) {
-            ChatScreen(navController = navController)
+            ChatScreen(
+                navController = navController,
+                authenticationViewModel = authenticationViewModel,
+                signInWithGoogle = { signInWithGoogle() })
         }
         composable(route = Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(
+                navController = navController,
+                authenticationViewModel = authenticationViewModel,
+                signOutFromGoogle = { signOutFromGoogle() })
         }
     }
 }

@@ -3,6 +3,7 @@
     package="com.powilliam.android.chatting">
 
     <application
+        android:name=".ChattingApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

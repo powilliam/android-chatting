@@ -20,14 +20,17 @@ import androidx.constraintlayout.compose.Dimension
 import com.powilliam.android.chatting.ui.ChattingTheme
 
 sealed class ChatOverlayState {
-    object DisplayGoogleSignIn : ChatOverlayState()
+    data class DisplayGoogleSignIn(val onPressGoogleSignIn: () -> Unit = {}) : ChatOverlayState()
     object DisplayMessageForm : ChatOverlayState()
 }
 
 @Composable
 fun ChatOverlay(
     modifier: Modifier = Modifier,
-    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn
+    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn(),
+    content: String = "",
+    onContentChanged: (String) -> Unit = {},
+    onCreateMessage: () -> Unit = {}
 ) = Surface(
     color = MaterialTheme.colors.background,
     modifier = modifier
@@ -35,8 +38,14 @@ fun ChatOverlay(
 ) {
     Crossfade(targetState = chatOverlayState) { state ->
         when (state) {
-            is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn()
-            is ChatOverlayState.DisplayMessageForm -> WithMessageForm()
+            is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn {
+                state.onPressGoogleSignIn()
+            }
+            is ChatOverlayState.DisplayMessageForm -> WithMessageForm(
+                content = content,
+                onContentChanged = onContentChanged,
+                onCreateMessage = onCreateMessage
+            )
         }
     }
 }
@@ -58,7 +67,11 @@ private fun WithGoogleSignIn(onPressGoogleSignIn: () -> Unit = {}) =
     }
 
 @Composable
-private fun WithMessageForm() {
+private fun WithMessageForm(
+    content: String = "",
+    onContentChanged: (String) -> Unit,
+    onCreateMessage: () -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,8 +80,8 @@ private fun WithMessageForm() {
         val (textField, submit) = createRefs()
 
         TextField(
-            value = "",
-            onValueChange = {},
+            value = content,
+            onValueChange = onContentChanged,
             placeholder = {
                 Text(text = "Message")
             },
@@ -88,7 +101,7 @@ private fun WithMessageForm() {
         )
 
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = onCreateMessage,
             modifier = Modifier.constrainAs(ref = submit) {
                 end.linkTo(anchor = parent.end)
                 top.linkTo(anchor = parent.top)
