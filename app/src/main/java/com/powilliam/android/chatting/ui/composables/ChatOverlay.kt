@@ -19,16 +19,17 @@ import com.powilliam.android.chatting.ui.ChattingTheme
 sealed class ChatOverlayState {
     object DisplayProgressIndicator : ChatOverlayState()
     object DisplayMessageForm : ChatOverlayState()
-    data class DisplayGoogleSignIn(val onPressGoogleSignIn: () -> Unit = {}) : ChatOverlayState()
+    object DisplayGoogleSignIn : ChatOverlayState()
 }
 
 @Composable
 fun ChatOverlay(
     modifier: Modifier = Modifier,
-    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn(),
+    chatOverlayState: ChatOverlayState = ChatOverlayState.DisplayGoogleSignIn,
     content: String = "",
     onContentChanged: (String) -> Unit = {},
-    onCreateMessage: () -> Unit = {}
+    onCreateMessage: () -> Unit = {},
+    onPressGoogleSignIn: () -> Unit = {}
 ) = Surface(
     color = MaterialTheme.colors.background,
     modifier = modifier
@@ -38,7 +39,7 @@ fun ChatOverlay(
         when (state) {
             is ChatOverlayState.DisplayProgressIndicator -> WithProgressIndicator()
             is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn {
-                state.onPressGoogleSignIn()
+                onPressGoogleSignIn()
             }
             is ChatOverlayState.DisplayMessageForm -> WithMessageForm(
                 content = content,
