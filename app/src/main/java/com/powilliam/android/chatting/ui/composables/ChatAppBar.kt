@@ -2,7 +2,6 @@ package com.powilliam.android.chatting.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
