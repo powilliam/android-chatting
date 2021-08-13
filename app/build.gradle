@@ -42,6 +42,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -58,6 +59,8 @@ android {
 dependencies {
 
     implementation platform(Dependencies.Google.Firebase.bom)
+
+    coreLibraryDesugaring Dependencies.desugarJdkLibs
 
     implementation Dependencies.Google.playServicesAuth
 

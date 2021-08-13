@@ -5,6 +5,7 @@ object Dependencies {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     const val googleServicesGradlePlugin = "com.google.gms:google-services:4.3.8"
+    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
     object Coil {
         const val coilCompose = "io.coil-kt:coil-compose:1.3.2"
