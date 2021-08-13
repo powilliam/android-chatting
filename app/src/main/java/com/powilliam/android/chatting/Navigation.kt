@@ -29,6 +29,7 @@ fun Navigation(
             ChatScreen(
                 navController = navController,
                 authenticationViewModel = authenticationViewModel,
+                messagesViewModel = messagesViewModel,
                 signInWithGoogle = { signInWithGoogle() })
         }
         composable(route = Screen.Profile.route) {
