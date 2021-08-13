@@ -23,12 +23,9 @@ class MainActivity : ComponentActivity() {
     private val authenticationViewModel: AuthenticationViewModel by viewModel()
     private val messagesViewModel: MessagesViewModel by viewModel()
     private val firebaseAuth: FirebaseAuth = Firebase.auth
-    private val firebaseDatabase: FirebaseDatabase = Firebase.database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        firebaseDatabase.setPersistenceEnabled(true)
 
         firebaseAuth.currentUser?.let {
             authenticationViewModel.authenticate(it)
