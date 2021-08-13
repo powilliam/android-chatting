@@ -2,10 +2,7 @@ package com.powilliam.android.chatting.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,8 +17,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.powilliam.android.chatting.ui.ChattingTheme
 
 sealed class ChatOverlayState {
-    data class DisplayGoogleSignIn(val onPressGoogleSignIn: () -> Unit = {}) : ChatOverlayState()
+    object DisplayProgressIndicator : ChatOverlayState()
     object DisplayMessageForm : ChatOverlayState()
+    data class DisplayGoogleSignIn(val onPressGoogleSignIn: () -> Unit = {}) : ChatOverlayState()
 }
 
 @Composable
@@ -38,6 +36,7 @@ fun ChatOverlay(
 ) {
     Crossfade(targetState = chatOverlayState) { state ->
         when (state) {
+            is ChatOverlayState.DisplayProgressIndicator -> WithProgressIndicator()
             is ChatOverlayState.DisplayGoogleSignIn -> WithGoogleSignIn {
                 state.onPressGoogleSignIn()
             }
@@ -48,6 +47,15 @@ fun ChatOverlay(
             )
         }
     }
+}
+
+@Composable
+private fun WithProgressIndicator() = Row(
+    modifier = Modifier
+        .fillMaxWidth()
+        .padding(12.dp), horizontalArrangement = Arrangement.Center
+) {
+    CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 1.dp)
 }
 
 @Composable

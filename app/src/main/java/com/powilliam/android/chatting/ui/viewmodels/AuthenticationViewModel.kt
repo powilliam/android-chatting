@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 
 sealed class AuthenticationState {
     object Unauthenticated : AuthenticationState()
+    object Authenticating : AuthenticationState()
     data class Authenticated(val account: FirebaseUser) : AuthenticationState()
 }
 
@@ -16,6 +17,10 @@ class AuthenticationViewModel : ViewModel() {
     private var _authenticationState: MutableStateFlow<AuthenticationState> =
         MutableStateFlow(AuthenticationState.Unauthenticated)
     val authenticationState: StateFlow<AuthenticationState> = _authenticationState
+
+    fun authenticating() = viewModelScope.launch {
+        _authenticationState.emit(AuthenticationState.Authenticating)
+    }
 
     fun authenticate(account: FirebaseUser) = viewModelScope.launch {
         _authenticationState.emit(AuthenticationState.Authenticated(account))

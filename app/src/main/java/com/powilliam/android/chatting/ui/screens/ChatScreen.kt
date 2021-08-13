@@ -35,10 +35,11 @@ fun ChatScreen(
     }
     val chatOverlayState by remember {
         derivedStateOf {
-            if (authenticationState.value is AuthenticationState.Unauthenticated) {
-                ChatOverlayState.DisplayGoogleSignIn(onPressGoogleSignIn = { signInWithGoogle() })
-            } else {
-                ChatOverlayState.DisplayMessageForm
+            when (authenticationState.value) {
+                is AuthenticationState.Authenticating -> ChatOverlayState.DisplayProgressIndicator
+                is AuthenticationState.Authenticated -> ChatOverlayState.DisplayMessageForm
+                is AuthenticationState.Unauthenticated -> ChatOverlayState.DisplayGoogleSignIn(
+                    onPressGoogleSignIn = { signInWithGoogle() })
             }
         }
     }
