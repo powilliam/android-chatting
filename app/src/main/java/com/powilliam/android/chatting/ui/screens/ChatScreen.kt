@@ -12,7 +12,6 @@ import com.powilliam.android.chatting.ui.composables.*
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
 import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -29,10 +28,9 @@ fun ChatScreen(
 
     val appBarState by remember {
         derivedStateOf {
-            if (authenticationState.value is AuthenticationState.Unauthenticated) {
-                ChatAppBarState.Hidden
-            } else {
-                ChatAppBarState.Visible(onPressActionButton = { navController.navigate(Screen.Profile.route) })
+            when (authenticationState.value) {
+                is AuthenticationState.Authenticated -> ChatAppBarState.Visible
+                else -> ChatAppBarState.Hidden
             }
         }
     }
@@ -61,7 +59,11 @@ fun ChatScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            ChatAppBar(appBarState = appBarState)
+            ChatAppBar(appBarState = appBarState, onPressProfileActionButton = {
+                navController.navigate(
+                    Screen.Profile.route
+                )
+            })
         },
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
