@@ -12,6 +12,7 @@ import com.powilliam.android.chatting.ui.composables.*
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
 import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -19,6 +20,7 @@ fun ChatScreen(
     navController: NavHostController,
     authenticationViewModel: AuthenticationViewModel = getViewModel(),
     messagesViewModel: MessagesViewModel = getViewModel(),
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
     signInWithGoogle: () -> Unit = {}
 ) {
     val authenticationState = authenticationViewModel.authenticationState.collectAsState()
@@ -26,27 +28,43 @@ fun ChatScreen(
 
     val appBarState by remember {
         derivedStateOf {
-            if (authenticationState.value is AuthenticationState.Unauthenticated) {
-                ChatAppBarState.Hidden
-            } else {
-                ChatAppBarState.Visible(onPressActionButton = { navController.navigate(Screen.Profile.route) })
+            when (authenticationState.value) {
+                is AuthenticationState.Authenticated -> ChatAppBarState.Visible
+                else -> ChatAppBarState.Hidden
             }
         }
     }
     val chatOverlayState by remember {
         derivedStateOf {
-            if (authenticationState.value is AuthenticationState.Unauthenticated) {
-                ChatOverlayState.DisplayGoogleSignIn(onPressGoogleSignIn = { signInWithGoogle() })
-            } else {
-                ChatOverlayState.DisplayMessageForm
+            when (authenticationState.value) {
+                is AuthenticationState.Authenticating -> ChatOverlayState.DisplayProgressIndicator
+                is AuthenticationState.Authenticated -> ChatOverlayState.DisplayMessageForm
+                is AuthenticationState.Unauthenticated -> ChatOverlayState.DisplayGoogleSignIn
+                is AuthenticationState.AuthenticationFailed -> ChatOverlayState.DisplayGoogleSignIn
+            }
+        }
+    }
+
+    if (authenticationState.value is AuthenticationState.AuthenticationFailed) {
+        LaunchedEffect(authenticationState, scaffoldState) {
+            launch {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    (authenticationState.value as AuthenticationState.AuthenticationFailed).reason,
+                    duration = SnackbarDuration.Short
+                )
             }
         }
     }
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
-            ChatAppBar(appBarState = appBarState)
-        }
+            ChatAppBar(appBarState = appBarState, onPressProfileActionButton = {
+                navController.navigate(
+                    Screen.Profile.route
+                )
+            })
+        },
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (lazyColumn, divider, actions) = createRefs()
@@ -77,6 +95,7 @@ fun ChatScreen(
                         messagesViewModel.onCreateMessage((authenticationState.value as AuthenticationState.Authenticated).account)
                     }
                 },
+                onPressGoogleSignIn = { signInWithGoogle() },
                 modifier = Modifier.constrainAs(ref = actions) {
                     start.linkTo(anchor = parent.start)
                     end.linkTo(anchor = parent.end)

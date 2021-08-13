@@ -54,14 +54,16 @@ class MainActivity : ComponentActivity() {
                     val account = task.getResult(ApiException::class.java)!!
                     firebaseAuthWithGoogle(account.idToken!!)
                 } catch (e: ApiException) {
-                    e.printStackTrace()
-                    authenticationViewModel.unAuthenticate()
+                    authenticationViewModel.authenticationFailed(
+                        GOOGLE_PLAY_SERVICES_AUTHENTICATION_FAILURE
+                    )
                 }
             }
         }
     }
 
     private fun signInWithGoogle() {
+        authenticationViewModel.authenticating()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -84,12 +86,16 @@ class MainActivity : ComponentActivity() {
                     authenticationViewModel.authenticate(it)
                 }
             } else {
-                authenticationViewModel.unAuthenticate()
+                authenticationViewModel.authenticationFailed(FIREBASE_AUTHENTICATION_FAILURE)
             }
         }
     }
 
     companion object {
         private const val GOOGLE_SIGNIN_REQUEST_CODE = 101
+        private const val GOOGLE_PLAY_SERVICES_AUTHENTICATION_FAILURE =
+            "Unable to interact with Google Play Services"
+        private const val FIREBASE_AUTHENTICATION_FAILURE =
+            "Unable to authenticate with Google Sign In"
     }
 }

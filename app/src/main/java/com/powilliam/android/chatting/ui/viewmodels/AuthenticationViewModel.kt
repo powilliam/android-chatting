@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 
 sealed class AuthenticationState {
     object Unauthenticated : AuthenticationState()
+    object Authenticating : AuthenticationState()
+    data class AuthenticationFailed(val reason: String) : AuthenticationState()
     data class Authenticated(val account: FirebaseUser) : AuthenticationState()
 }
 
@@ -17,11 +19,25 @@ class AuthenticationViewModel : ViewModel() {
         MutableStateFlow(AuthenticationState.Unauthenticated)
     val authenticationState: StateFlow<AuthenticationState> = _authenticationState
 
+    fun authenticating() = viewModelScope.launch {
+        _authenticationState.emit(AuthenticationState.Authenticating)
+    }
+
     fun authenticate(account: FirebaseUser) = viewModelScope.launch {
         _authenticationState.emit(AuthenticationState.Authenticated(account))
     }
 
     fun unAuthenticate() = viewModelScope.launch {
         _authenticationState.emit(AuthenticationState.Unauthenticated)
+    }
+
+    fun authenticationFailed(reason: String = DEFAULT_AUTHENTICATION_FAILURE_REASON) =
+        viewModelScope.launch {
+            _authenticationState.emit(AuthenticationState.AuthenticationFailed(reason))
+        }
+
+    companion object {
+        private const val DEFAULT_AUTHENTICATION_FAILURE_REASON =
+            "Failed to authenticate with Google Credentials"
     }
 }

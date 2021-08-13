@@ -15,28 +15,31 @@ import com.powilliam.android.chatting.ui.ChattingTheme
 
 sealed class ChatAppBarState {
     object Hidden : ChatAppBarState()
-    data class Visible(val onPressActionButton: () -> Unit = {}) : ChatAppBarState()
+    object Visible : ChatAppBarState()
 }
 
 @Composable
-fun ChatAppBar(appBarState: ChatAppBarState = ChatAppBarState.Hidden) =
+fun ChatAppBar(
+    appBarState: ChatAppBarState = ChatAppBarState.Hidden,
+    onPressProfileActionButton: () -> Unit = {}
+) =
     Crossfade(targetState = appBarState) { state ->
         when (state) {
             is ChatAppBarState.Visible -> VisibleAppBar {
-                state.onPressActionButton()
+                onPressProfileActionButton()
             }
-            else -> {
+            is ChatAppBarState.Hidden -> {
             }
         }
     }
 
 @Composable
-private fun VisibleAppBar(onPressActionButton: () -> Unit) = TopAppBar(
+private fun VisibleAppBar(onPressProfileActionButton: () -> Unit) = TopAppBar(
     elevation = 0.dp,
     backgroundColor = MaterialTheme.colors.background,
     title = {},
     actions = {
-        IconButton(onClick = onPressActionButton) {
+        IconButton(onClick = onPressProfileActionButton) {
             Icon(
                 imageVector = Icons.Rounded.Person,
                 contentDescription = "Go to Profile Screen"
@@ -58,6 +61,6 @@ private fun ChatAppBarHiddenState_Preview() {
 @Composable
 private fun ChatAppBarVisibleState_Preview() {
     ChattingTheme {
-        ChatAppBar(appBarState = ChatAppBarState.Visible())
+        ChatAppBar(appBarState = ChatAppBarState.Visible)
     }
 }
