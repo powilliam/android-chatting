@@ -12,14 +12,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.powilliam.android.chatting.ui.ChattingTheme
-import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
-import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import com.powilliam.android.chatting.shared.ui.viewmodels.AuthenticationViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
     private val authenticationViewModel: AuthenticationViewModel by viewModel()
-    private val messagesViewModel: MessagesViewModel by viewModel()
     private val firebaseAuth: FirebaseAuth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,13 +27,10 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            ChattingTheme {
-                Navigation(
-                    authenticationViewModel = authenticationViewModel,
-                    messagesViewModel = messagesViewModel,
-                    signInWithGoogle = { signInWithGoogle() },
-                    signOutFromGoogle = { signOutFromGoogle() })
-            }
+            Chatting(
+                authenticationViewModel = authenticationViewModel,
+                signInWithGoogle = { signInWithGoogle() },
+                signOutFromGoogle = { signOutFromGoogle() })
         }
     }
 

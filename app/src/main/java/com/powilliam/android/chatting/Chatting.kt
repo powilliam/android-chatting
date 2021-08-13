@@ -5,10 +5,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.powilliam.android.chatting.ui.screens.ChatScreen
-import com.powilliam.android.chatting.ui.screens.ProfileScreen
-import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
-import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import com.powilliam.android.chatting.chat.Chat
+import com.powilliam.android.chatting.chat.ui.viewmodels.ChatViewModel
+import com.powilliam.android.chatting.profile.Profile
+import com.powilliam.android.chatting.shared.ui.viewmodels.AuthenticationViewModel
+import com.powilliam.android.chatting.ui.ChattingTheme
 import org.koin.androidx.compose.getViewModel
 
 sealed class Screen(val route: String) {
@@ -17,23 +18,23 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun Navigation(
+fun Chatting(
     navController: NavHostController = rememberNavController(),
     authenticationViewModel: AuthenticationViewModel = getViewModel(),
-    messagesViewModel: MessagesViewModel = getViewModel(),
+    chatViewModel: ChatViewModel = getViewModel(),
     signInWithGoogle: () -> Unit = {},
     signOutFromGoogle: () -> Unit = {}
-) {
+) = ChattingTheme {
     NavHost(navController = navController, startDestination = Screen.Chat.route) {
         composable(route = Screen.Chat.route) {
-            ChatScreen(
+            Chat(
                 navController = navController,
                 authenticationViewModel = authenticationViewModel,
-                messagesViewModel = messagesViewModel,
+                chatViewModel = chatViewModel,
                 signInWithGoogle = { signInWithGoogle() })
         }
         composable(route = Screen.Profile.route) {
-            ProfileScreen(
+            Profile(
                 navController = navController,
                 authenticationViewModel = authenticationViewModel,
                 signOutFromGoogle = { signOutFromGoogle() })

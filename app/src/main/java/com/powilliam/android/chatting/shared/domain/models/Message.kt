@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.domain.models
+package com.powilliam.android.chatting.shared.domain.models
 
 import com.powilliam.android.chatting.utils.now
 import java.util.*

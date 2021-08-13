@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.ui.composables
+package com.powilliam.android.chatting.chat.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.Crossfade
@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.powilliam.android.chatting.chat.ScrollState
 import com.powilliam.android.chatting.ui.ChattingTheme
-import com.powilliam.android.chatting.ui.screens.ScrollState
 
 sealed class ChatAppBarState {
     object Hidden : ChatAppBarState()
