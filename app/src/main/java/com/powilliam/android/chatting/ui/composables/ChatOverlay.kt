@@ -2,6 +2,7 @@ package com.powilliam.android.chatting.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,7 +31,8 @@ fun ChatOverlay(
     content: String = "",
     onContentChanged: (String) -> Unit = {},
     onCreateMessage: () -> Unit = {},
-    onPressGoogleSignIn: () -> Unit = {}
+    onPressGoogleSignIn: () -> Unit = {},
+    onTextInputIsFocused: () -> Unit = {}
 ) = Surface(
     color = MaterialTheme.colors.background,
     modifier = modifier
@@ -44,7 +47,8 @@ fun ChatOverlay(
             is ChatOverlayState.DisplayMessageForm -> WithMessageForm(
                 content = content,
                 onContentChanged = onContentChanged,
-                onCreateMessage = onCreateMessage
+                onCreateMessage = onCreateMessage,
+                onKeyboardOpened = { onTextInputIsFocused() }
             )
         }
     }
@@ -78,8 +82,9 @@ private fun WithGoogleSignIn(onPressGoogleSignIn: () -> Unit = {}) =
 @Composable
 private fun WithMessageForm(
     content: String = "",
-    onContentChanged: (String) -> Unit,
-    onCreateMessage: () -> Unit
+    onContentChanged: (String) -> Unit = {},
+    onCreateMessage: () -> Unit = {},
+    onKeyboardOpened: () -> Unit = {}
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -106,6 +111,12 @@ private fun WithMessageForm(
                     start.linkTo(anchor = parent.start)
                     end.linkTo(anchor = submit.start, margin = 8.dp)
                     width = Dimension.fillToConstraints
+                }
+                .focusable(true)
+                .onFocusEvent { focusState ->
+                    if (focusState.isFocused) {
+                        onKeyboardOpened()
+                    }
                 }
         )
 

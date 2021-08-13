@@ -1,5 +1,6 @@
 package com.powilliam.android.chatting.ui.screens
 
+import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
@@ -13,6 +14,7 @@ import com.powilliam.android.chatting.ui.composables.*
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
 import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
 import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -27,6 +29,7 @@ fun ChatScreen(
     authenticationViewModel: AuthenticationViewModel = getViewModel(),
     messagesViewModel: MessagesViewModel = getViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
     signInWithGoogle: () -> Unit = {}
 ) {
     val authenticationState = authenticationViewModel.authenticationState.collectAsState()
@@ -106,7 +109,6 @@ fun ChatScreen(
                 bottom.linkTo(anchor = actions.top)
             })
 
-
             ChatOverlay(
                 chatOverlayState = chatOverlayState,
                 content = messagesState.value.content,
@@ -117,6 +119,13 @@ fun ChatScreen(
                     }
                 },
                 onPressGoogleSignIn = { signInWithGoogle() },
+                onTextInputIsFocused = {
+                    coroutineScope.launch {
+                        listState.animateScrollBy(
+                            value = listState.layoutInfo.viewportEndOffset.toFloat(),
+                        )
+                    }
+                },
                 modifier = Modifier.constrainAs(ref = actions) {
                     start.linkTo(anchor = parent.start)
                     end.linkTo(anchor = parent.end)
