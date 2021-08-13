@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.ui.composables
+package com.powilliam.android.chatting.chat.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.Crossfade

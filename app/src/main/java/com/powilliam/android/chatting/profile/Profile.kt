@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.ui.screens
+package com.powilliam.android.chatting.profile
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ScrollState
@@ -16,15 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseUser
-import com.powilliam.android.chatting.ui.composables.ActionCard
-import com.powilliam.android.chatting.ui.composables.Description
-import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
-import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
+import com.powilliam.android.chatting.shared.ui.composables.ActionCard
+import com.powilliam.android.chatting.shared.ui.composables.Description
+import com.powilliam.android.chatting.shared.ui.viewmodels.AuthenticationState
+import com.powilliam.android.chatting.shared.ui.viewmodels.AuthenticationViewModel
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProfileScreen(
+fun Profile(
     navController: NavHostController,
     authenticationViewModel: AuthenticationViewModel = getViewModel(),
     scrollState: ScrollState = rememberScrollState(),

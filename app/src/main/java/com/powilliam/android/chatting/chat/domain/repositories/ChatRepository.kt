@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.domain.repositories
+package com.powilliam.android.chatting.chat.domain.repositories
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.database.DataSnapshot
@@ -6,7 +6,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.getValue
-import com.powilliam.android.chatting.domain.models.Message
+import com.powilliam.android.chatting.shared.domain.models.Message
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,16 +15,16 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import java.io.Closeable
 
-interface MessagesRepository : ValueEventListener, Closeable {
+interface ChatRepository : ValueEventListener, Closeable {
     val realtimeMessages: StateFlow<List<Message>>
 
-    suspend fun create(vararg messages: Message)
+    suspend fun writeMessages(vararg messages: Message)
 }
 
-class MessagesRepositoryImpl(
+class ChatRepositoryImpl(
     private val databaseRef: DatabaseReference,
     private val firebaseCrashlytics: FirebaseCrashlytics
-) : MessagesRepository {
+) : ChatRepository {
     private val coroutineScope = CoroutineScope(Job() + Dispatchers.IO)
 
     private var _realtimeMessages: MutableStateFlow<List<Message>> = MutableStateFlow(listOf())
@@ -51,7 +51,7 @@ class MessagesRepositoryImpl(
         firebaseCrashlytics.recordException(error.toException())
     }
 
-    override suspend fun create(vararg messages: Message) {
+    override suspend fun writeMessages(vararg messages: Message) {
         coroutineScope.launch {
             val updates: MutableMap<String, Any> = HashMap()
             val inserts = messages.map { message -> Pair(message.uid, message) }

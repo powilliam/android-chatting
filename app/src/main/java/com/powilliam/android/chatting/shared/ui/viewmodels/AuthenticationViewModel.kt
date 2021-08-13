@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.ui.viewmodels
+package com.powilliam.android.chatting.shared.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

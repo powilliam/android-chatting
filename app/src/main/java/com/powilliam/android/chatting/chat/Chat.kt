@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.ui.screens
+package com.powilliam.android.chatting.chat
 
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.*
@@ -10,10 +10,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.powilliam.android.chatting.Screen
-import com.powilliam.android.chatting.ui.composables.*
-import com.powilliam.android.chatting.ui.viewmodels.AuthenticationState
-import com.powilliam.android.chatting.ui.viewmodels.AuthenticationViewModel
-import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
+import com.powilliam.android.chatting.chat.ui.composables.*
+import com.powilliam.android.chatting.shared.ui.viewmodels.AuthenticationState
+import com.powilliam.android.chatting.shared.ui.viewmodels.AuthenticationViewModel
+import com.powilliam.android.chatting.chat.ui.viewmodels.ChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -24,16 +24,16 @@ sealed class ScrollState {
 }
 
 @Composable
-fun ChatScreen(
+fun Chat(
     navController: NavHostController,
     authenticationViewModel: AuthenticationViewModel = getViewModel(),
-    messagesViewModel: MessagesViewModel = getViewModel(),
+    chatViewModel: ChatViewModel = getViewModel(),
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     signInWithGoogle: () -> Unit = {}
 ) {
     val authenticationState = authenticationViewModel.authenticationState.collectAsState()
-    val messagesState = messagesViewModel.messagesState.collectAsState()
+    val messagesState = chatViewModel.chatState.collectAsState()
 
     val listState = rememberLazyListState()
 
@@ -112,10 +112,10 @@ fun ChatScreen(
             ChatOverlay(
                 chatOverlayState = chatOverlayState,
                 content = messagesState.value.content,
-                onContentChanged = { newContent -> messagesViewModel.onContentChanged(newContent) },
+                onContentChanged = { newContent -> chatViewModel.onContentChanged(newContent) },
                 onCreateMessage = {
                     if (authenticationState.value is AuthenticationState.Authenticated) {
-                        messagesViewModel.onCreateMessage((authenticationState.value as AuthenticationState.Authenticated).account)
+                        chatViewModel.onCreateMessage((authenticationState.value as AuthenticationState.Authenticated).account)
                     }
                 },
                 onPressGoogleSignIn = { signInWithGoogle() },

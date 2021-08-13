@@ -1,4 +1,4 @@
-package com.powilliam.android.chatting.ui.composables
+package com.powilliam.android.chatting.chat.ui.composables
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.powilliam.android.chatting.domain.models.Message
+import com.powilliam.android.chatting.shared.domain.models.Message
 import com.powilliam.android.chatting.ui.ChattingTheme
 
 @OptIn(ExperimentalFoundationApi::class)
