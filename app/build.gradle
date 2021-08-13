@@ -4,6 +4,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -62,6 +63,8 @@ dependencies {
 
     implementation Dependencies.Google.Firebase.auth
     implementation Dependencies.Google.Firebase.realtimeDatabase
+    implementation Dependencies.Google.Firebase.crashlytics
+    implementation Dependencies.Google.Firebase.analytics
 
     implementation Dependencies.AndroidX.core
     implementation Dependencies.AndroidX.appCompat

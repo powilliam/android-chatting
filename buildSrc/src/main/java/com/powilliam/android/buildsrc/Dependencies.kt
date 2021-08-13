@@ -22,6 +22,9 @@ object Dependencies {
             const val bom = "com.google.firebase:firebase-bom:28.3.1"
             const val auth = "com.google.firebase:firebase-auth-ktx"
             const val realtimeDatabase = "com.google.firebase:firebase-database-ktx"
+            const val crashlyticsGradlePlugin = "com.google.firebase:firebase-crashlytics-gradle:2.7.1"
+            const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
+            const val analytics = "com.google.firebase:firebase-analytics-ktx"
         }
     }
 
