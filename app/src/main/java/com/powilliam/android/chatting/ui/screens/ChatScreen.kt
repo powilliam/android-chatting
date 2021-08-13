@@ -1,6 +1,7 @@
 package com.powilliam.android.chatting.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,6 +16,11 @@ import com.powilliam.android.chatting.ui.viewmodels.MessagesViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
+sealed class ScrollState {
+    object Parked : ScrollState()
+    object Scrolling : ScrollState()
+}
+
 @Composable
 fun ChatScreen(
     navController: NavHostController,
@@ -26,6 +32,17 @@ fun ChatScreen(
     val authenticationState = authenticationViewModel.authenticationState.collectAsState()
     val messagesState = messagesViewModel.messagesState.collectAsState()
 
+    val listState = rememberLazyListState()
+
+    val scrollState by remember {
+        derivedStateOf {
+            if (!listState.isScrollInProgress) {
+                ScrollState.Parked
+            } else {
+                ScrollState.Scrolling
+            }
+        }
+    }
     val appBarState by remember {
         derivedStateOf {
             when (authenticationState.value) {
@@ -59,17 +76,21 @@ fun ChatScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            ChatAppBar(appBarState = appBarState, onPressProfileActionButton = {
-                navController.navigate(
-                    Screen.Profile.route
-                )
-            })
+            ChatAppBar(
+                appBarState = appBarState,
+                scrollState = scrollState,
+                onPressProfileActionButton = {
+                    navController.navigate(
+                        Screen.Profile.route
+                    )
+                })
         },
     ) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (lazyColumn, divider, actions) = createRefs()
 
             MessageCardList(
+                listState = listState,
                 messages = messagesState.value.messages,
                 modifier = Modifier.constrainAs(ref = lazyColumn) {
                     start.linkTo(anchor = parent.start)
