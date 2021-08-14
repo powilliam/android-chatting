@@ -8,6 +8,7 @@ import com.powilliam.android.chatting.chat.domain.repositories.ChatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 data class ChatState(val content: String = "", val messages: List<Message> = listOf())
@@ -18,11 +19,12 @@ class ChatViewModel(private val chatRepository: ChatRepository) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            chatRepository.messages.collect { messages ->
-                _chatState.emit(
-                    _chatState.value.copy(messages = messages)
-                )
-            }
+            chatRepository.messages.map { messages -> messages.sortedBy { message -> message.date } }
+                .collect { messages ->
+                    _chatState.emit(
+                        _chatState.value.copy(messages = messages)
+                    )
+                }
         }
     }
 
