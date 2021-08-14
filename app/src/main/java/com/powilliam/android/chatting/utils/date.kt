@@ -2,13 +2,15 @@ package com.powilliam.android.chatting.utils
 
 import kotlinx.datetime.*
 
-fun now(timeZone: TimeZone = TimeZone.UTC): LocalDateTime {
-    return Clock.System.now().toLocalDateTime(timeZone)
+fun now(): Long {
+    return Clock.System.now().toEpochMilliseconds()
 }
 
 fun parse(
-    isoString: String
+    epochMilliseconds: Long,
+    timeZone: TimeZone = TimeZone.UTC
 ): String {
-    val parsedLocalDateTime = LocalDateTime.parse(isoString)
+    val parsedLocalDateTime =
+        Instant.fromEpochMilliseconds(epochMilliseconds).toLocalDateTime(timeZone)
     return "${parsedLocalDateTime.dayOfMonth}/${parsedLocalDateTime.monthNumber}/${parsedLocalDateTime.year}"
 }

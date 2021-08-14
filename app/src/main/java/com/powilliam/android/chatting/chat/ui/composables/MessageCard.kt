@@ -14,7 +14,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
-import com.powilliam.android.chatting.shared.domain.models.Message
+import com.powilliam.android.chatting.chat.domain.models.Message
 import com.powilliam.android.chatting.ui.ChattingTheme
 import com.powilliam.android.chatting.utils.parse
 import com.powilliam.android.chatting.R
