@@ -3,7 +3,7 @@ package com.powilliam.android.chatting.chat.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.powilliam.android.chatting.shared.domain.models.Message
+import com.powilliam.android.chatting.chat.domain.models.Message
 import com.powilliam.android.chatting.chat.domain.repositories.ChatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ class ChatViewModel(private val chatRepository: ChatRepository) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            chatRepository.realtimeMessages.collect { messages ->
+            chatRepository.messages.collect { messages ->
                 _chatState.emit(
                     _chatState.value.copy(messages = messages)
                 )

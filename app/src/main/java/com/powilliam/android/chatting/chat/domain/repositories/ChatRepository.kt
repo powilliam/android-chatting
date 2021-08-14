@@ -1,22 +1,16 @@
 package com.powilliam.android.chatting.chat.domain.repositories
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
-import com.powilliam.android.chatting.shared.domain.models.Message
+import com.powilliam.android.chatting.chat.domain.models.Message
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import java.io.Closeable
 
-interface ChatRepository : ValueEventListener, Closeable {
-    val realtimeMessages: StateFlow<List<Message>>
+interface ChatRepository : ChildEventListener, Closeable {
+    val messages: StateFlow<List<Message>>
 
     suspend fun writeMessages(vararg messages: Message)
 }
@@ -27,25 +21,39 @@ class ChatRepositoryImpl(
 ) : ChatRepository {
     private val coroutineScope = CoroutineScope(Job() + Dispatchers.IO)
 
-    private var _realtimeMessages: MutableStateFlow<List<Message>> = MutableStateFlow(listOf())
-    override val realtimeMessages: StateFlow<List<Message>> = _realtimeMessages
+    private var _messages: MutableStateFlow<List<Message>> = MutableStateFlow(listOf())
+    override val messages: StateFlow<List<Message>> = _messages
 
     init {
-        databaseRef.child(DATABASE_CHILD).keepSynced(true)
-        databaseRef.child(DATABASE_CHILD).addValueEventListener(this)
+        databaseRef.child(DATABASE_CHILD).also { messages ->
+            messages.keepSynced(true)
+            messages.orderByChild("date").addChildEventListener(this)
+        }
     }
 
-    override fun onDataChange(snapshot: DataSnapshot) {
+    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
         coroutineScope.launch {
-            snapshot.getValue<Map<String, Message>>()?.let { mapOfMessages ->
-                val messages = mapOfMessages.map { (_, message) -> message }.sortedBy { message ->
-                    message.date.toLocalDateTime().toInstant(timeZone = TimeZone.UTC)
-                        .toEpochMilliseconds()
-                }
-                _realtimeMessages.emit(messages)
+            snapshot.getValue<Message>()?.let { message ->
+                val newMessages = _messages.value.toMutableList()
+                    .also { messages -> messages.add(message) }
+                _messages.emit(newMessages)
             }
         }
     }
+
+    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+
+    override fun onChildRemoved(snapshot: DataSnapshot) {
+        coroutineScope.launch {
+            snapshot.getValue<Message>()?.let { message ->
+                val newMessages = _messages.value.toMutableList()
+                    .also { messages -> messages.remove(message) }
+                _messages.emit(newMessages)
+            }
+        }
+    }
+
+    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
     override fun onCancelled(error: DatabaseError) {
         firebaseCrashlytics.recordException(error.toException())
