@@ -11,11 +11,18 @@ android {
     compileSdk 31
 
     signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'debugAndroid'
+            keyAlias 'debug-alias'
+            keyPassword 'debugAndroid'
+        }
+
         release {
-            storeFile file('release.keystore')
-            storePassword 'release'
-            keyAlias 'release'
-            keyPassword 'release'
+            storeFile file('production.keystore')
+            storePassword 'prodpassword'
+            keyAlias 'production-alias'
+            keyPassword 'prodpassword'
         }
     }
 
@@ -34,6 +41,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
